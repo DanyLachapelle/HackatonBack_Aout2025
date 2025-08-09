@@ -26,7 +26,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/v2/files")
-@CrossOrigin(origins = "http://localhost:5173")
 public class FileManagementController {
     
     private final FileManagementService fileManagementService;
@@ -113,6 +112,8 @@ public class FileManagementController {
         }
     }
     
+    // La gestion CORS globale est configurée via WebMvcConfigurer (CorsConfig)
+
     @PostMapping("/files/upload")
     public ResponseEntity<FileDto> uploadFile(
             @RequestParam("file") MultipartFile file,
@@ -321,6 +322,7 @@ public class FileManagementController {
         }
     }
     
+    @CrossOrigin(origins = {"http://localhost:5173", "http://127.0.0.1:5173"})
     @GetMapping("/download")
     public ResponseEntity<Resource> downloadFile(
             @RequestParam String path, 
@@ -336,7 +338,11 @@ public class FileManagementController {
                 String contentType = determineContentType(filename);
                 
                 ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok()
-                        .contentType(MediaType.parseMediaType(contentType));
+                        .contentType(MediaType.parseMediaType(contentType))
+                        .header("Access-Control-Allow-Origin", "http://localhost:5173")
+                        .header("Access-Control-Allow-Methods", "GET, OPTIONS")
+                        .header("Access-Control-Allow-Headers", "Range, Accept")
+                        .header("Accept-Ranges", "bytes");
                 
                 if (inline) {
                     // Pour l'affichage inline (images, etc.)
@@ -385,6 +391,23 @@ public class FileManagementController {
                 return "application/json";
             case "pdf":
                 return "application/pdf";
+            // Audio files
+            case "mp3":
+                return "audio/mpeg";
+            case "wav":
+                return "audio/wav";
+            case "flac":
+                return "audio/flac";
+            case "ogg":
+                return "audio/ogg";
+            case "m4a":
+                return "audio/mp4";
+            case "aac":
+                return "audio/aac";
+            case "opus":
+                return "audio/opus";
+            case "wma":
+                return "audio/x-ms-wma";
             default:
                 return "application/octet-stream";
         }

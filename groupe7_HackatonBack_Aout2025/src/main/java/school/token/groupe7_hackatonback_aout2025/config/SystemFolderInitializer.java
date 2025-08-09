@@ -14,7 +14,8 @@ public class SystemFolderInitializer {
     /**
      * Initialise les dossiers système pour tous les utilisateurs au démarrage
      */
-    @Bean
+    // Temporairement désactivé pour test CORS
+    // @Bean
     public ApplicationRunner initSystemFolders(SystemFolderService systemFolderService) {
         return args -> {
             try {
