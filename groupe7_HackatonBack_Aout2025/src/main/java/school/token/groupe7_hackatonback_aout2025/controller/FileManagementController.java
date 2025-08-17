@@ -115,15 +115,20 @@ public class FileManagementController {
     // La gestion CORS globale est configurée via WebMvcConfigurer (CorsConfig)
 
     @PostMapping("/files/upload")
-    public ResponseEntity<FileDto> uploadFile(
+    public ResponseEntity<?> uploadFile(
             @RequestParam("file") MultipartFile file,
             @RequestParam("parentPath") String parentPath,
             @RequestParam(defaultValue = "1") Long userId) {
         try {
             FileDto uploadedFile = fileManagementService.uploadFile(parentPath, file, userId);
             return ResponseEntity.ok(uploadedFile);
+        } catch (RuntimeException e) {
+            // Retourner le message d'erreur spécifique
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            // Log l'erreur pour le debug
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Erreur inattendue lors de l'upload: " + e.getMessage());
         }
     }
     

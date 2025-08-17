@@ -49,10 +49,7 @@ public enum SystemFolderType {
             case IMAGES:
                 return contentType.startsWith("image/");
             case DOCUMENTS:
-                return contentType.startsWith("text/") || 
-                       contentType.equals("application/pdf") ||
-                       contentType.startsWith("application/vnd.openxmlformats-officedocument") ||
-                       contentType.startsWith("application/vnd.oasis.opendocument");
+                return true; // Tous les types de fichiers autorisés dans Documents
             default:
                 return false;
         }

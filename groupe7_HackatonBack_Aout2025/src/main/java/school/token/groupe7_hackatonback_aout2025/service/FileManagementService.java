@@ -174,47 +174,67 @@ public class FileManagementService {
     }
     
     public FileDto uploadFile(String parentPath, MultipartFile multipartFile, Long userId) {
-        User user = getUserById(userId);
-        
-        String fileName = multipartFile.getOriginalFilename();
-        if (fileName == null || fileName.isEmpty()) {
-            throw new RuntimeException("Nom de fichier invalide");
-        }
-        
-        // Si aucun chemin spécifié, utiliser le dossier Bureau par défaut
-        if (parentPath == null || parentPath.isEmpty() || "/".equals(parentPath)) {
-            Folder bureauFolder = folderRepository.findByUserAndSystemFolderType(user, SystemFolderType.BUREAU)
-                .orElseThrow(() -> new RuntimeException("Dossier Bureau non trouvé"));
-            parentPath = bureauFolder.getPath();
-        }
-        
-        String filePath = buildPath(parentPath, fileName);
-        
-        if (fileRepository.existsByPathAndUser(filePath, user)) {
-            throw new RuntimeException("Un fichier avec ce nom existe déjà");
-        }
-        
-        Folder folder = folderRepository.findByPathAndUser(parentPath, user)
-            .orElseThrow(() -> new RuntimeException("Dossier parent non trouvé"));
-        
-        // Vérifier les restrictions des dossiers système
-        if (folder.getIsSystemFolder()) {
-            String contentType = multipartFile.getContentType();
-            if (!systemFolderService.canAddFileToSystemFolder(parentPath, contentType)) {
-                throw new RuntimeException("Type de fichier non autorisé dans ce dossier système.");
+        try {
+            System.out.println("=== UPLOAD FILE DEBUG ===");
+            System.out.println("ParentPath: " + parentPath);
+            System.out.println("FileName: " + multipartFile.getOriginalFilename());
+            System.out.println("ContentType: " + multipartFile.getContentType());
+            System.out.println("Size: " + multipartFile.getSize());
+            System.out.println("UserId: " + userId);
+            
+            User user = getUserById(userId);
+            
+            String fileName = multipartFile.getOriginalFilename();
+            if (fileName == null || fileName.isEmpty()) {
+                throw new RuntimeException("Nom de fichier invalide");
             }
+            
+            // Si aucun chemin spécifié, utiliser le dossier Bureau par défaut
+            if (parentPath == null || parentPath.isEmpty() || "/".equals(parentPath)) {
+                Folder bureauFolder = folderRepository.findByUserAndSystemFolderType(user, SystemFolderType.BUREAU)
+                    .orElseThrow(() -> new RuntimeException("Dossier Bureau non trouvé"));
+                parentPath = bureauFolder.getPath();
+            }
+            
+            String filePath = buildPath(parentPath, fileName);
+            System.out.println("FilePath: " + filePath);
+            
+            if (fileRepository.existsByPathAndUser(filePath, user)) {
+                throw new RuntimeException("Un fichier avec ce nom existe déjà");
+            }
+            
+            Folder folder = folderRepository.findByPathAndUser(parentPath, user)
+                .orElseThrow(() -> new RuntimeException("Dossier parent non trouvé"));
+            
+            System.out.println("Folder found: " + folder.getName() + " (System: " + folder.getIsSystemFolder() + ")");
+            
+            // Vérifier les restrictions des dossiers système
+            if (folder.getIsSystemFolder()) {
+                String contentType = multipartFile.getContentType();
+                System.out.println("Checking system folder restrictions for contentType: " + contentType);
+                if (!systemFolderService.canAddFileToSystemFolder(parentPath, contentType)) {
+                    System.out.println("❌ File type not allowed in system folder: " + contentType);
+                    throw new RuntimeException("Type de fichier non autorisé dans ce dossier système.");
+                }
+                System.out.println("✅ File type allowed in system folder");
+            }
+            
+            File file = new File(fileName, filePath, multipartFile.getContentType(), user);
+            file.setFolder(folder);
+            file.setSize(multipartFile.getSize());
+            
+            // Sauvegarder le fichier physique
+            String physicalPath = savePhysicalFile(filePath, multipartFile);
+            file.setFilePath(physicalPath);
+            
+            File savedFile = fileRepository.save(file);
+            System.out.println("✅ File uploaded successfully: " + savedFile.getName());
+            return entityMapper.toDto(savedFile);
+        } catch (Exception e) {
+            System.out.println("❌ Error during upload: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
-        
-        File file = new File(fileName, filePath, multipartFile.getContentType(), user);
-        file.setFolder(folder);
-        file.setSize(multipartFile.getSize());
-        
-        // Sauvegarder le fichier physique
-        String physicalPath = savePhysicalFile(filePath, multipartFile);
-        file.setFilePath(physicalPath);
-        
-        File savedFile = fileRepository.save(file);
-        return entityMapper.toDto(savedFile);
     }
     
     public String getFileContent(String path, Long userId) {
