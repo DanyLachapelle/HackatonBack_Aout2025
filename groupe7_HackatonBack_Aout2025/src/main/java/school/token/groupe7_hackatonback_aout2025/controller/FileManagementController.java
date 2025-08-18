@@ -73,7 +73,7 @@ public class FileManagementController {
         }
     }
 
-    // a faire
+    // fais
     @GetMapping("/folders/favorites")
     public ResponseEntity<List<FolderDto>> getFavoriteFolders(@RequestParam(defaultValue = "1") Long userId) {
         try {
@@ -83,7 +83,8 @@ public class FileManagementController {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
+    // en cours
     // === ENDPOINTS POUR LES FICHIERS ===
     
     @GetMapping("/files")
