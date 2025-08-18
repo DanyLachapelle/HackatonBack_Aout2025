@@ -62,7 +62,7 @@ public class FileManagementController {
         }
     }
 
-    // a faire
+
     @PostMapping("/folders/favorite")
     public ResponseEntity<Void> toggleFolderFavorite(@RequestBody ToggleFolderFavoriteRequest request) {
         try {

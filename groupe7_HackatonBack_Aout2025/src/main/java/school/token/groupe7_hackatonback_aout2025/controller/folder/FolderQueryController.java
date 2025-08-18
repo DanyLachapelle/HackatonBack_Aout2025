@@ -7,6 +7,8 @@ import school.token.groupe7_hackatonback_aout2025.application.dto.FolderDto;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.FolderQueryProcessor;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.findFoldersByUserAndPath.FindFoldersByUserAndPathOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.findFoldersByUserAndPath.FindFoldersByUserAndPathQuery;
+import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.getFavoriteFolder.GetFavoriteFolderOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.getFavoriteFolder.GetFavoriteFolderQuery;
 
 import java.util.List;
 
@@ -33,6 +35,17 @@ public class FolderQueryController {
         FindFoldersByUserAndPathOutput output = folderQueryProcessor
                 .findFoldersByUserAndPath(new FindFoldersByUserAndPathQuery(path, userId));
         return ResponseEntity.ok(output.getFolders());
+    }
+
+    @GetMapping("/getFavoriteFolders")
+    @ApiResponse(responseCode = "200", description = "Retrieve favorite folders for the user")
+    @ApiResponse(responseCode = "404", description = "No favorite folders found for the user")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public ResponseEntity<List<FolderDto>> getFavoriteFolders(@RequestParam("userId") Long userId) {
+        GetFavoriteFolderQuery query = new GetFavoriteFolderQuery(userId);
+        GetFavoriteFolderOutput output = folderQueryProcessor.getFavoriteFolders(query);
+
+        return ResponseEntity.ok(output.getFavoriteFolders());
     }
 
 
