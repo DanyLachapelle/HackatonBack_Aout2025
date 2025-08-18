@@ -84,7 +84,7 @@ public class FileManagementController {
         }
     }
 
-    // en cours
+
     // === ENDPOINTS POUR LES FICHIERS ===
     
     @GetMapping("/files")

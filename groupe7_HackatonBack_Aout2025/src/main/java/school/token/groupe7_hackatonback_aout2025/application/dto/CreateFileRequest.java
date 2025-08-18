@@ -48,4 +48,14 @@ public class CreateFileRequest {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "CreateFileRequest{" +
+                "parentPath='" + parentPath + '\'' +
+                ", name='" + name + '\'' +
+                ", content='" + content + '\'' +
+                ", userId=" + userId +
+                '}';
+    }
 }
