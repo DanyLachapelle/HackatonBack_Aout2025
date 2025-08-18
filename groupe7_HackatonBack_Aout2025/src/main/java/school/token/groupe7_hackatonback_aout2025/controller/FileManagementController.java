@@ -7,8 +7,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import school.token.groupe7_hackatonback_aout2025.dto.*;
-import school.token.groupe7_hackatonback_aout2025.service.FileManagementService;
+import school.token.groupe7_hackatonback_aout2025.application.dto.CreateFileRequest;
+import school.token.groupe7_hackatonback_aout2025.application.dto.CreateFolderRequest;
+import school.token.groupe7_hackatonback_aout2025.application.dto.FileDto;
+import school.token.groupe7_hackatonback_aout2025.application.dto.FolderDto;
+import school.token.groupe7_hackatonback_aout2025.application.service.FileManagementService;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;

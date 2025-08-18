@@ -3,9 +3,9 @@ package school.token.groupe7_hackatonback_aout2025.controller;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.token.groupe7_hackatonback_aout2025.dto.CalendarEventDto;
-import school.token.groupe7_hackatonback_aout2025.dto.EventReminderDto;
-import school.token.groupe7_hackatonback_aout2025.service.CalendarService;
+import school.token.groupe7_hackatonback_aout2025.application.dto.CalendarEventDto;
+import school.token.groupe7_hackatonback_aout2025.application.dto.EventReminderDto;
+import school.token.groupe7_hackatonback_aout2025.application.service.CalendarService;
 
 import java.time.LocalDateTime;
 import java.util.List;

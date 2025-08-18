@@ -1,9 +1,8 @@
 package school.token.groupe7_hackatonback_aout2025.config;
 
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import school.token.groupe7_hackatonback_aout2025.service.SystemFolderService;
+import school.token.groupe7_hackatonback_aout2025.application.service.SystemFolderService;
 
 /**
  * Configuration pour initialiser les dossiers système au démarrage de l'application
