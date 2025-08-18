@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.web.bind.annotation.*;
 import school.token.groupe7_hackatonback_aout2025.application.dto.CreateFolderRequest;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.commands.FolderCommandProcessor;
+import school.token.groupe7_hackatonback_aout2025.application.features.folder.commands.SetFavoriteFolder.SetFavoriteFolderCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.folder.commands.SetFavoriteFolder.SetFavoriteFolderOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.commands.createFolder.CreateFolderCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.commands.createFolder.CreateFolderOutput;
 
@@ -29,6 +31,18 @@ public class FolderCommandController {
                 request.getUserId()
         );
         return folderCommandProcessor.createFolder(command);
+    }
+
+    @PostMapping("/SetFavoriteFolder")
+    @ApiResponse(responseCode = "200", description = "Folder favorite status updated successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid request data")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public SetFavoriteFolderOutput setFavoriteFolder(@RequestBody SetFavoriteFolderCommand input) {
+        SetFavoriteFolderCommand command = new SetFavoriteFolderCommand(
+                input.getPath(),
+                input.getUserId()
+        );
+        return folderCommandProcessor.setFavoriteFolder(command);
     }
 
 }
