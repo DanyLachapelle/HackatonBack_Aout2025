@@ -7,10 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import school.token.groupe7_hackatonback_aout2025.application.dto.CreateFileRequest;
-import school.token.groupe7_hackatonback_aout2025.application.dto.CreateFolderRequest;
-import school.token.groupe7_hackatonback_aout2025.application.dto.FileDto;
-import school.token.groupe7_hackatonback_aout2025.application.dto.FolderDto;
+import school.token.groupe7_hackatonback_aout2025.application.dto.*;
 import school.token.groupe7_hackatonback_aout2025.application.service.FileManagementService;
 
 import java.net.MalformedURLException;
@@ -64,19 +61,19 @@ public class FileManagementController {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
+    // a faire
     @PostMapping("/folders/favorite")
-    public ResponseEntity<Void> toggleFolderFavorite(@RequestBody Map<String, Object> request) {
+    public ResponseEntity<Void> toggleFolderFavorite(@RequestBody ToggleFolderFavoriteRequest request) {
         try {
-            String path = (String) request.get("path");
-            Long userId = Long.parseLong(request.get("userId").toString());
-            fileManagementService.toggleFolderFavorite(path, userId);
+            fileManagementService.toggleFolderFavorite(request.getPath(), request.getUserId());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
+    // a faire
     @GetMapping("/folders/favorites")
     public ResponseEntity<List<FolderDto>> getFavoriteFolders(@RequestParam(defaultValue = "1") Long userId) {
         try {

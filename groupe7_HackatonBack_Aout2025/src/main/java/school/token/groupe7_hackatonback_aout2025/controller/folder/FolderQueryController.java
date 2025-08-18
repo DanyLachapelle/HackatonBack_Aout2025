@@ -2,10 +2,9 @@ package school.token.groupe7_hackatonback_aout2025.controller.folder;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import school.token.groupe7_hackatonback_aout2025.application.dto.FolderDto;
-import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.FindFoldersByUserAndPathProcessor;
+import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.FolderQueryProcessor;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.findFoldersByUserAndPath.FindFoldersByUserAndPathOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.findFoldersByUserAndPath.FindFoldersByUserAndPathQuery;
 
@@ -15,10 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/folders")
 public class FolderQueryController {
-    private final FindFoldersByUserAndPathProcessor findFoldersByUserAndPathProcessor;
+    private final FolderQueryProcessor folderQueryProcessor;
 
-    public FolderQueryController(FindFoldersByUserAndPathProcessor findFoldersByUserAndPathProcessor) {
-        this.findFoldersByUserAndPathProcessor = findFoldersByUserAndPathProcessor;
+    public FolderQueryController(FolderQueryProcessor folderQueryProcessor) {
+        this.folderQueryProcessor = folderQueryProcessor;
     }
 
     @GetMapping("/getFoldersByUserAndPath")
@@ -31,7 +30,7 @@ public class FolderQueryController {
             @RequestParam("userId") Long userId)
     {
 
-        FindFoldersByUserAndPathOutput output = findFoldersByUserAndPathProcessor
+        FindFoldersByUserAndPathOutput output = folderQueryProcessor
                 .findFoldersByUserAndPath(new FindFoldersByUserAndPathQuery(path, userId));
         return ResponseEntity.ok(output.getFolders());
     }
