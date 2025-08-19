@@ -4,12 +4,14 @@ package school.token.groupe7_hackatonback_aout2025.controller.file;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import school.token.groupe7_hackatonback_aout2025.application.dto.CreateFileRequest;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.FileCommandProcessor;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.createFile.CreateFileCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.createFile.CreateFileOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFile.DeleteFileCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileCommand;
@@ -78,6 +80,24 @@ public class FileCommandController {
         return fileCommandProcessor.updateFileContent(
                 new UpdateFileContentCommand(path, content, userId)
         );
+    }
+
+    @DeleteMapping("/DeleteFile")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "File deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "File not found for the given path"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<String> deleteFile(@RequestParam String path,
+                                             @RequestParam(defaultValue = "1") Long userId) {
+        try {
+            DeleteFileCommand deleteFileCommand = new DeleteFileCommand(path, userId);
+            fileCommandProcessor.deleteFile(deleteFileCommand);
+            return ResponseEntity.ok("File deleted successfully");
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors de la suppression du fichier : " + e.getMessage());
+            return ResponseEntity.status(500).body("Error deleting file: " + e.getMessage());
+        }
     }
 
 }
