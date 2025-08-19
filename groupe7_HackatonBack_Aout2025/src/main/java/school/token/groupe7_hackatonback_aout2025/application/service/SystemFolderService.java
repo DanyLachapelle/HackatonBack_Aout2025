@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import school.token.groupe7_hackatonback_aout2025.domain.Folder;
 import school.token.groupe7_hackatonback_aout2025.domain.SystemFolderType;
-import school.token.groupe7_hackatonback_aout2025.model.User;
+import school.token.groupe7_hackatonback_aout2025.domain.User;
 import school.token.groupe7_hackatonback_aout2025.infrastructure.repository.FolderRepository;
 import school.token.groupe7_hackatonback_aout2025.infrastructure.repository.UserRepository;
 

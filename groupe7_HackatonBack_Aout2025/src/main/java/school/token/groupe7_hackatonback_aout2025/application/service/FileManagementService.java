@@ -10,7 +10,7 @@ import school.token.groupe7_hackatonback_aout2025.application.dto.FolderDto;
 import school.token.groupe7_hackatonback_aout2025.application.mapper.EntityMapper;
 import school.token.groupe7_hackatonback_aout2025.domain.File;
 import school.token.groupe7_hackatonback_aout2025.domain.Folder;
-import school.token.groupe7_hackatonback_aout2025.model.User;
+import school.token.groupe7_hackatonback_aout2025.domain.User;
 import school.token.groupe7_hackatonback_aout2025.infrastructure.repository.FileRepository;
 import school.token.groupe7_hackatonback_aout2025.infrastructure.repository.FolderRepository;
 import school.token.groupe7_hackatonback_aout2025.infrastructure.repository.UserRepository;

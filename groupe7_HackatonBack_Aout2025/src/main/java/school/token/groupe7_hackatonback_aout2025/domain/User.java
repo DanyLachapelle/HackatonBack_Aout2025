@@ -1,4 +1,4 @@
-package school.token.groupe7_hackatonback_aout2025.model;
+package school.token.groupe7_hackatonback_aout2025.domain;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

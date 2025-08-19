@@ -1,7 +1,7 @@
 package school.token.groupe7_hackatonback_aout2025.domain;
 
 import jakarta.persistence.*;
-import school.token.groupe7_hackatonback_aout2025.model.User;
+import school.token.groupe7_hackatonback_aout2025.domain.User;
 
 import java.time.LocalDateTime;
 

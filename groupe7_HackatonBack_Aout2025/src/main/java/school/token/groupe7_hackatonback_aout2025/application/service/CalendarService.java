@@ -6,7 +6,7 @@ import school.token.groupe7_hackatonback_aout2025.application.dto.EventReminderD
 import school.token.groupe7_hackatonback_aout2025.application.mapper.EntityMapper;
 import school.token.groupe7_hackatonback_aout2025.domain.CalendarEvent;
 import school.token.groupe7_hackatonback_aout2025.domain.EventReminder;
-import school.token.groupe7_hackatonback_aout2025.model.User;
+import school.token.groupe7_hackatonback_aout2025.domain.User;
 import school.token.groupe7_hackatonback_aout2025.infrastructure.repository.CalendarEventRepository;
 import school.token.groupe7_hackatonback_aout2025.infrastructure.repository.EventReminderRepository;
 import school.token.groupe7_hackatonback_aout2025.infrastructure.repository.UserRepository;

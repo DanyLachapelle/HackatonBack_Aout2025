@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import school.token.groupe7_hackatonback_aout2025.domain.File;
 import school.token.groupe7_hackatonback_aout2025.domain.Folder;
-import school.token.groupe7_hackatonback_aout2025.model.User;
+import school.token.groupe7_hackatonback_aout2025.domain.User;
 
 import java.util.List;
 import java.util.Optional;
