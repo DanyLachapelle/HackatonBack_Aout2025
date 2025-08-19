@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.token.groupe7_hackatonback_aout2025.application.dto.FileDto;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.FileQueryProcessor;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.SearchFile.SearchFileOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.SearchFile.SearchFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getContentByFile.GetContentByFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getContentByFile.GetContentByFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFavoriteFile.GetFavoriteFileOutput;
@@ -85,6 +87,28 @@ public class FileQueryController {
             return ResponseEntity.ok(output.getFiles());
         } catch (Exception e) {
             System.out.println("❌ Erreur lors de la récupération des fichiers favoris : " + e.getMessage());
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/SearchFiles")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Search files by query"),
+            @ApiResponse(responseCode = "404", description = "No files found for the given query"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<List<FileDto>> searchFiles(@RequestParam("query") String query,
+                                                     @RequestParam("userId") Long userId) {
+        try {
+            SearchFileQuery searchFileQuery = new SearchFileQuery(query, userId);
+            SearchFileOutput output = fileQueryProcessor.searchFile(searchFileQuery);
+
+            if (output.getFiles().isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(output.getFiles());
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors de la recherche de fichiers : " + e.getMessage());
             return ResponseEntity.status(500).body(null);
         }
     }
