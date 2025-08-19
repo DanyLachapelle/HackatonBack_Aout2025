@@ -49,4 +49,6 @@ public interface FileRepository extends JpaRepository<File, Long> {
     long countByUserAndFolderIsNull(User user);
     
     long countByUserAndFolder(User user, Folder folder);
+
+    List<File> findByFolderId(Long folderId);
 } 

@@ -13,6 +13,7 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.comm
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.createFile.CreateFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFile.DeleteFileCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFileById.DeleteFileByIdCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFolderById.DeleteFolderByIdCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileCommand;
@@ -101,7 +102,7 @@ public class FileCommandController {
         }
     }
 
-    @DeleteMapping("/DeleteFileById")
+    @DeleteMapping("/DeleteFileById/{fileId}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "File deleted successfully"),
             @ApiResponse(responseCode = "404", description = "File not found for the given ID"),
@@ -116,6 +117,23 @@ public class FileCommandController {
         } catch (Exception e) {
             System.out.println("❌ Erreur lors de la suppression du fichier par ID : " + e.getMessage());
             return ResponseEntity.status(500).body("Error deleting file by ID: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/DeleteFolderById/{folderId}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Folder deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Folder not found for the given ID"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<String> deleteFolderById(@RequestParam Long folderId,
+                                                    @RequestParam(defaultValue = "1") Long userId) {
+        try {
+            DeleteFolderByIdCommand cmd = new DeleteFolderByIdCommand(folderId, userId);
+            fileCommandProcessor.deleteFolderById(cmd);
+            return ResponseEntity.ok("Folder deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error deleting folder by ID: " + e.getMessage());
         }
     }
 

@@ -314,7 +314,13 @@ public class FileManagementService {
         if (folder.getIsSystemFolder()) {
             throw new RuntimeException("Impossible de supprimer un dossier système");
         }
-        
+
+        List<File> files = fileRepository.findByFolderId(folderId);
+        for (File file : files) {
+            deletePhysicalFile(file.getPath()); // supprimer le fichier physique
+        }
+        fileRepository.deleteAll(files);
+
         // Supprimer le dossier physique
         deletePhysicalFile(folder.getPath());
         
