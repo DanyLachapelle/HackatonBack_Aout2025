@@ -14,6 +14,8 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.quer
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFavoriteFile.GetFavoriteFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFileByPath.GetFileByPathOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFileByPath.GetFileByPathQuery;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.searchFileByType.SearchFileByTypeOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.searchFileByType.SearchFileByTypeQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.findFoldersByUserAndPath.FindFoldersByUserAndPathOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.findFoldersByUserAndPath.FindFoldersByUserAndPathQuery;
 import school.token.groupe7_hackatonback_aout2025.domain.File;
@@ -109,6 +111,28 @@ public class FileQueryController {
             return ResponseEntity.ok(output.getFiles());
         } catch (Exception e) {
             System.out.println("❌ Erreur lors de la recherche de fichiers : " + e.getMessage());
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/SearchFilesByType")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Search files by type"),
+            @ApiResponse(responseCode = "404", description = "No files found for the given type"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<List<FileDto>> searchFilesByType(@RequestParam("contentType") String contentType,
+                                                            @RequestParam("userId") Long userId) {
+        try {
+            SearchFileByTypeQuery searchFileByType = new SearchFileByTypeQuery(contentType, userId);
+            SearchFileByTypeOutput output = fileQueryProcessor.searchFileByType(searchFileByType);
+
+            if (output.getFiles().isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(output.getFiles());
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors de la recherche de fichiers par type : " + e.getMessage());
             return ResponseEntity.status(500).body(null);
         }
     }

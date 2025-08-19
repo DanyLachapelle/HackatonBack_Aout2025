@@ -9,6 +9,8 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.quer
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFavoriteFile.GetFavoriteFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFileByPath.GetFileByPathOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFileByPath.GetFileByPathQuery;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.searchFileByType.SearchFileByTypeOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.searchFileByType.SearchFileByTypeQuery;
 import school.token.groupe7_hackatonback_aout2025.application.utils.IQueryHandler;
 
 @Service
@@ -18,12 +20,14 @@ public class FileQueryProcessor {
     private final IQueryHandler<GetContentByFileQuery, GetContentByFileOutput> getContentByFileHandler;
     private final IQueryHandler<GetFavoriteFileQuery, GetFavoriteFileOutput> getFavoriteFileHandler;
     private final IQueryHandler<SearchFileQuery, SearchFileOutput> searchFileHandler;
+    private final IQueryHandler<SearchFileByTypeQuery, SearchFileByTypeOutput> searchFileByTypeHandler;
 
-    public FileQueryProcessor(IQueryHandler<GetFileByPathQuery, GetFileByPathOutput> getFileByPathHandler, IQueryHandler<GetContentByFileQuery, GetContentByFileOutput> getContentByFileHandler, IQueryHandler<GetFavoriteFileQuery, GetFavoriteFileOutput> getFavoriteFileHandler, IQueryHandler<SearchFileQuery, SearchFileOutput> searchFileHandler) {
+    public FileQueryProcessor(IQueryHandler<GetFileByPathQuery, GetFileByPathOutput> getFileByPathHandler, IQueryHandler<GetContentByFileQuery, GetContentByFileOutput> getContentByFileHandler, IQueryHandler<GetFavoriteFileQuery, GetFavoriteFileOutput> getFavoriteFileHandler, IQueryHandler<SearchFileQuery, SearchFileOutput> searchFileHandler, IQueryHandler<SearchFileByTypeQuery, SearchFileByTypeOutput> searchFileByTypeHandler) {
         this.getFileByPathHandler = getFileByPathHandler;
         this.getContentByFileHandler = getContentByFileHandler;
         this.getFavoriteFileHandler = getFavoriteFileHandler;
         this.searchFileHandler = searchFileHandler;
+        this.searchFileByTypeHandler = searchFileByTypeHandler;
     }
 
     public GetFileByPathOutput getFileByPath(GetFileByPathQuery query) {
@@ -40,5 +44,9 @@ public class FileQueryProcessor {
 
     public SearchFileOutput searchFile(SearchFileQuery query) {
         return searchFileHandler.handle(query);
+    }
+
+    public SearchFileByTypeOutput searchFileByType(SearchFileByTypeQuery query) {
+        return searchFileByTypeHandler.handle(query);
     }
 }
