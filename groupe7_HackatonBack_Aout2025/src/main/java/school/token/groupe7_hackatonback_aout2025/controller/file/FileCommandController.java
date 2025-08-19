@@ -18,7 +18,6 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.comm
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileCommand;
-import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileHandler;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileOutput;
 
 
@@ -156,5 +155,6 @@ public class FileCommandController {
             return ResponseEntity.status(500).body("Error renaming file: " + e.getMessage());
         }
     }
+
 
 }

@@ -14,6 +14,8 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.comm
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFolderById.DeleteFolderByIdOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.renameFile.RenameFileCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.renameFile.RenameFileOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.folder.commands.renameFolder.RenameFolderCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.folder.commands.renameFolder.RenameFolderOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentHandler;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentOutput;
@@ -37,7 +39,7 @@ public class FileCommandProcessor {
             UploadFileHandler uploadFileHandler,
             UpdateFileContentHandler updateFileContentHandler,
             DeleteFileHandler deleteFileHandler,
-            DeleteFileByIdHandler deleteFileByIdHandler, ICommandHandler<DeleteFolderByIdCommand, DeleteFolderByIdOutput> deleteFolderByIdHandler, ICommandHandler<RenameFileCommand, RenameFileOutput> renameFileHandler) {
+            DeleteFileByIdHandler deleteFileByIdHandler, ICommandHandler<DeleteFolderByIdCommand, DeleteFolderByIdOutput> deleteFolderByIdHandler, ICommandHandler<RenameFileCommand, RenameFileOutput> renameFileHandler, ICommandHandler<RenameFolderCommand, RenameFolderOutput> renameFolderHandler) {
         this.createFileHandler = createFileHandler;
         this.uploadFileHandler = uploadFileHandler;
         this.updateFileContentHandler = updateFileContentHandler;
@@ -74,4 +76,6 @@ public class FileCommandProcessor {
     public RenameFileOutput renameFile(RenameFileCommand command) {
         return renameFileHandler.handle(command);
     }
+
+
 }
