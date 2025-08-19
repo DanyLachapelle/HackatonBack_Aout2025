@@ -15,6 +15,7 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.comm
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFileById.DeleteFileByIdCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFolderById.DeleteFolderByIdCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.renameFile.RenameFileCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.setFavoriteFile.SetFavoriteFileCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileCommand;
@@ -156,5 +157,21 @@ public class FileCommandController {
         }
     }
 
-
+    @PostMapping("/SetFavoriteFile")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "File favorite status toggled successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid input data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<String> setFavoriteFile(@RequestParam String path,
+                                                  @RequestParam Long userId) {
+        try {
+            SetFavoriteFileCommand setFavoriteFileCommand = new SetFavoriteFileCommand(path, userId);
+            fileCommandProcessor.setFavoriteFile(setFavoriteFileCommand);
+            return ResponseEntity.ok("File favorite status toggled successfully");
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors de la modification du statut favori du fichier : " + e.getMessage());
+            return ResponseEntity.status(500).body("Error toggling file favorite status: " + e.getMessage());
+        }
+    }
 }
