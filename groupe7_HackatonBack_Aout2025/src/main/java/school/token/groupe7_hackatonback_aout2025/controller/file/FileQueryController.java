@@ -8,6 +8,7 @@ import school.token.groupe7_hackatonback_aout2025.application.dto.FileDto;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.FileQueryProcessor;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.SearchFile.SearchFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.SearchFile.SearchFileQuery;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getAudioFile.GetAudioFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getContentByFile.GetContentByFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getContentByFile.GetContentByFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFavoriteFile.GetFavoriteFileOutput;
@@ -154,6 +155,26 @@ public class FileQueryController {
             return ResponseEntity.ok(images);
         } catch (Exception e) {
             System.out.println("❌ Erreur lors de la récupération des fichiers image : " + e.getMessage());
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/GetAudioFiles")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Retrieve audio files for the user"),
+            @ApiResponse(responseCode = "404", description = "No audio files found for the user"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<List<FileDto>> getAudioFiles(@RequestParam("userId") Long userId) {
+        try {
+            GetAudioFileQuery getAudioFileQuery = new GetAudioFileQuery(userId);
+            List<FileDto> audioFiles = fileQueryProcessor.getAudioFile(getAudioFileQuery).getAudioFiles();
+            if (audioFiles.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(audioFiles);
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors de la récupération des fichiers audio : " + e.getMessage());
             return ResponseEntity.status(500).body(null);
         }
     }

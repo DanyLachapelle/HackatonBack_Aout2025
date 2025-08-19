@@ -6,7 +6,6 @@ import school.token.groupe7_hackatonback_aout2025.application.dto.FileDto;
 import school.token.groupe7_hackatonback_aout2025.application.dto.FolderDto;
 import school.token.groupe7_hackatonback_aout2025.application.dto.UserDto;
 import school.token.groupe7_hackatonback_aout2025.domain.*;
-import school.token.groupe7_hackatonback_aout2025.model.CalendarEvent;
 import school.token.groupe7_hackatonback_aout2025.model.User;
 
 /**

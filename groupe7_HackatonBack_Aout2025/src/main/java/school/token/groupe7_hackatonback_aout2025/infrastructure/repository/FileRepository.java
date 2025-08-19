@@ -51,4 +51,6 @@ public interface FileRepository extends JpaRepository<File, Long> {
     long countByUserAndFolder(User user, Folder folder);
 
     List<File> findByFolderId(Long folderId);
-} 
+
+    List<File> findByUserOrderByUpdatedAtDesc(User user);
+}

@@ -45,7 +45,8 @@ public enum SystemFolderType {
             case BUREAU:
                 return true; // Tous les types de fichiers autorisés sur le bureau
             case MUSIQUE:
-                return contentType.startsWith("audio/");
+                return contentType.startsWith("audio/")  ||
+                        contentType.equals("video/mp4");
             case IMAGES:
                 return contentType.startsWith("image/");
             case DOCUMENTS:

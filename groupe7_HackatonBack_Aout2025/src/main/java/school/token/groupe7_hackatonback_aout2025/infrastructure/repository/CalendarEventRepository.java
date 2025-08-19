@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import school.token.groupe7_hackatonback_aout2025.model.CalendarEvent;
+import school.token.groupe7_hackatonback_aout2025.domain.CalendarEvent;
 import school.token.groupe7_hackatonback_aout2025.model.User;
 
 import java.time.LocalDateTime;

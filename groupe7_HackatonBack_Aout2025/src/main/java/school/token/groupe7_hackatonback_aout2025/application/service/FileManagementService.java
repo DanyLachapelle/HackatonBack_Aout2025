@@ -453,11 +453,17 @@ public class FileManagementService {
         List<File> files = fileRepository.findByUserAndContentTypeLikeOrderByUpdatedAtDesc(user, "image/%");
         return files.stream().map(entityMapper::toDto).toList();
     }
-    
+
     public List<FileDto> getAudioFiles(Long userId) {
         User user = getUserById(userId);
-        List<File> files = fileRepository.findByUserAndContentTypeLikeOrderByUpdatedAtDesc(user, "audio/%");
-        return files.stream().map(entityMapper::toDto).toList();
+        List<File> files = fileRepository.findByUserOrderByUpdatedAtDesc(user);
+
+        return files.stream()
+                .filter(file -> file.getContentType() != null &&
+                        (file.getContentType().startsWith("audio/") ||
+                                file.getContentType().equals("video/mp4")))
+                .map(entityMapper::toDto)
+                .toList();
     }
     
     public List<FileDto> getTextFiles(Long userId) {
