@@ -14,6 +14,7 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.quer
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFavoriteFile.GetFavoriteFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFileByPath.GetFileByPathOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFileByPath.GetFileByPathQuery;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getImageFile.GetImageFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.searchFileByType.SearchFileByTypeOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.searchFileByType.SearchFileByTypeQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.findFoldersByUserAndPath.FindFoldersByUserAndPathOutput;
@@ -133,6 +134,26 @@ public class FileQueryController {
             return ResponseEntity.ok(output.getFiles());
         } catch (Exception e) {
             System.out.println("❌ Erreur lors de la recherche de fichiers par type : " + e.getMessage());
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/GetImageFiles")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Retrieve image files for the user"),
+            @ApiResponse(responseCode = "404", description = "No image files found for the user"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<List<FileDto>> getImageFiles(@RequestParam("userId") Long userId) {
+        try {
+            GetImageFileQuery getImageFileQuery = new GetImageFileQuery(userId);
+            List<FileDto> images = fileQueryProcessor.getImageFile(getImageFileQuery).getFiles();
+            if (images.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(images);
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors de la récupération des fichiers image : " + e.getMessage());
             return ResponseEntity.status(500).body(null);
         }
     }
