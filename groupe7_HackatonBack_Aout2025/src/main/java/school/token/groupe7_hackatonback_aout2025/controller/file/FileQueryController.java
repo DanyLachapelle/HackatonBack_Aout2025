@@ -8,6 +8,8 @@ import school.token.groupe7_hackatonback_aout2025.application.dto.FileDto;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.FileQueryProcessor;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getContentByFile.GetContentByFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getContentByFile.GetContentByFileQuery;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFavoriteFile.GetFavoriteFileOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFavoriteFile.GetFavoriteFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFileByPath.GetFileByPathOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFileByPath.GetFileByPathQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.findFoldersByUserAndPath.FindFoldersByUserAndPathOutput;
@@ -68,6 +70,22 @@ public class FileQueryController {
         }
     }
 
-
-
+    @GetMapping("/getFavoriteFiles")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Retrieve favorite files for the user"),
+            @ApiResponse(responseCode = "404", description = "No favorite files found for the user"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<List<FileDto>> getFavoriteFiles(@RequestParam("userId") Long userId) {
+        try {
+            GetFavoriteFileOutput output = fileQueryProcessor.getFavoriteFile(new GetFavoriteFileQuery(userId));
+            if (output.getFiles().isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(output.getFiles());
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors de la récupération des fichiers favoris : " + e.getMessage());
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 }
