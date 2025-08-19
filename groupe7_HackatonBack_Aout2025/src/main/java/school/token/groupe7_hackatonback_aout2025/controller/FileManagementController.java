@@ -1,5 +1,9 @@
 package school.token.groupe7_hackatonback_aout2025.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -115,24 +119,30 @@ public class FileManagementController {
     
     // La gestion CORS globale est configurée via WebMvcConfigurer (CorsConfig)
 
-    @PostMapping("/files/upload")
-    public ResponseEntity<?> uploadFile(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("parentPath") String parentPath,
-            @RequestParam(defaultValue = "1") Long userId) {
-        try {
-            FileDto uploadedFile = fileManagementService.uploadFile(parentPath, file, userId);
-            return ResponseEntity.ok(uploadedFile);
-        } catch (RuntimeException e) {
-            // Retourner le message d'erreur spécifique
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            // Log l'erreur pour le debug
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Erreur inattendue lors de l'upload: " + e.getMessage());
-        }
+    @Operation(summary = "Upload a file")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "File uploaded successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad request")
+    })
+    @PostMapping(
+            value = "/upload",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<FileDto> uploadFile(
+            @Parameter(description = "File to upload")
+            @RequestPart("file") MultipartFile file,
+
+            @Parameter(description = "Parent path")
+            @RequestParam String parentPath,
+
+            @Parameter(description = "User ID")
+            @RequestParam(defaultValue = "1") Long userId
+    ) {
+        FileDto uploadedFile = fileManagementService.uploadFile(parentPath, file, userId);
+        return ResponseEntity.ok(uploadedFile);
     }
-    
+
+
     @GetMapping("/files/content")
     public ResponseEntity<String> getFileContent(
             @RequestParam String path, 
