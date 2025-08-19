@@ -3,6 +3,8 @@ package school.token.groupe7_hackatonback_aout2025.application.features.file.que
 import org.springframework.stereotype.Service;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.SearchFile.SearchFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.SearchFile.SearchFileQuery;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.countFileByPath.CountFileByPathOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.countFileByPath.CountFileByPathQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getAudioFile.GetAudioFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getAudioFile.GetAudioFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getContentByFile.GetContentByFileOutput;
@@ -30,7 +32,8 @@ public class FileQueryProcessor {
     private final IQueryHandler<GetImageFileQuery, GetImageFileOutput> getImageFileHandler;
     private final IQueryHandler<GetAudioFileQuery, GetAudioFileOutput> getAudioFileHandler;
     private final IQueryHandler<GetTextFileQuery, GetTextFileOutput> getTextFileHandler;
-    public FileQueryProcessor(IQueryHandler<GetFileByPathQuery, GetFileByPathOutput> getFileByPathHandler, IQueryHandler<GetContentByFileQuery, GetContentByFileOutput> getContentByFileHandler, IQueryHandler<GetFavoriteFileQuery, GetFavoriteFileOutput> getFavoriteFileHandler, IQueryHandler<SearchFileQuery, SearchFileOutput> searchFileHandler, IQueryHandler<SearchFileByTypeQuery, SearchFileByTypeOutput> searchFileByTypeHandler, IQueryHandler<GetImageFileQuery, GetImageFileOutput> getImageFileHandler, IQueryHandler<GetAudioFileQuery, GetAudioFileOutput> getAudioFileHandler, IQueryHandler<GetTextFileQuery, GetTextFileOutput> getTextFileHandler) {
+    private final IQueryHandler<CountFileByPathQuery, CountFileByPathOutput> countFileByPathHandler;
+    public FileQueryProcessor(IQueryHandler<GetFileByPathQuery, GetFileByPathOutput> getFileByPathHandler, IQueryHandler<GetContentByFileQuery, GetContentByFileOutput> getContentByFileHandler, IQueryHandler<GetFavoriteFileQuery, GetFavoriteFileOutput> getFavoriteFileHandler, IQueryHandler<SearchFileQuery, SearchFileOutput> searchFileHandler, IQueryHandler<SearchFileByTypeQuery, SearchFileByTypeOutput> searchFileByTypeHandler, IQueryHandler<GetImageFileQuery, GetImageFileOutput> getImageFileHandler, IQueryHandler<GetAudioFileQuery, GetAudioFileOutput> getAudioFileHandler, IQueryHandler<GetTextFileQuery, GetTextFileOutput> getTextFileHandler, IQueryHandler<CountFileByPathQuery, CountFileByPathOutput> countFileByPathHandler) {
         this.getFileByPathHandler = getFileByPathHandler;
         this.getContentByFileHandler = getContentByFileHandler;
         this.getFavoriteFileHandler = getFavoriteFileHandler;
@@ -39,6 +42,7 @@ public class FileQueryProcessor {
         this.getImageFileHandler = getImageFileHandler;
         this.getAudioFileHandler = getAudioFileHandler;
         this.getTextFileHandler = getTextFileHandler;
+        this.countFileByPathHandler = countFileByPathHandler;
     }
 
     public GetFileByPathOutput getFileByPath(GetFileByPathQuery query) {
@@ -71,5 +75,9 @@ public class FileQueryProcessor {
 
     public GetTextFileOutput getTextFile(GetTextFileQuery query) {
         return getTextFileHandler.handle(query);
+    }
+
+    public CountFileByPathOutput countFileByPath(CountFileByPathQuery query) {
+        return countFileByPathHandler.handle(query);
     }
 }
