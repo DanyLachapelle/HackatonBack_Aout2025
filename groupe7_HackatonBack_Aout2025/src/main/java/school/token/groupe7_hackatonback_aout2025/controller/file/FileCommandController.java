@@ -10,6 +10,8 @@ import school.token.groupe7_hackatonback_aout2025.application.dto.CreateFileRequ
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.FileCommandProcessor;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.createFile.CreateFileCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.createFile.CreateFileOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileHandler;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileOutput;
@@ -66,5 +68,16 @@ public class FileCommandController {
         return fileCommandProcessor.uploadFile(command);
     }
 
+    @PutMapping("/UpdateFileContent")
+    @ApiResponse(responseCode = "200", description = "Update file content")
+    @ApiResponse(responseCode = "400", description = "Bad request, invalid input data")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public UpdateFileContentOutput updateFileContent(@RequestParam String path,
+                                                     @RequestParam String content,
+                                                     @RequestParam(defaultValue = "1") Long userId) {
+        return fileCommandProcessor.updateFileContent(
+                new UpdateFileContentCommand(path, content, userId)
+        );
+    }
 
 }
