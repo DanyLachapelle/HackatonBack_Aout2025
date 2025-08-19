@@ -16,6 +16,7 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.quer
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFileByPath.GetFileByPathOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getFileByPath.GetFileByPathQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getImageFile.GetImageFileQuery;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getTextFile.GetTextFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.searchFileByType.SearchFileByTypeOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.searchFileByType.SearchFileByTypeQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.folder.queries.findFoldersByUserAndPath.FindFoldersByUserAndPathOutput;
@@ -175,6 +176,26 @@ public class FileQueryController {
             return ResponseEntity.ok(audioFiles);
         } catch (Exception e) {
             System.out.println("❌ Erreur lors de la récupération des fichiers audio : " + e.getMessage());
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/GetTextFiles")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Retrieve text files for the user"),
+            @ApiResponse(responseCode = "404", description = "No text files found for the user"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<List<FileDto>> getTextFiles(@RequestParam("userId") Long userId) {
+        try {
+            GetTextFileQuery getTextFileQuery = new GetTextFileQuery(userId);
+            List<FileDto> textFiles = fileQueryProcessor.getTextFile(getTextFileQuery).getTextFiles();
+            if (textFiles.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(textFiles);
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors de la récupération des fichiers texte : " + e.getMessage());
             return ResponseEntity.status(500).body(null);
         }
     }
