@@ -12,6 +12,7 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.comm
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.createFile.CreateFileCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.createFile.CreateFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFile.DeleteFileCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFileById.DeleteFileByIdCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileCommand;
@@ -97,6 +98,24 @@ public class FileCommandController {
         } catch (Exception e) {
             System.out.println("❌ Erreur lors de la suppression du fichier : " + e.getMessage());
             return ResponseEntity.status(500).body("Error deleting file: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/DeleteFileById")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "File deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "File not found for the given ID"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<String> deleteFileById(@RequestParam Long fileId,
+                                                  @RequestParam(defaultValue = "1") Long userId) {
+        try {
+            DeleteFileByIdCommand deleteFileCommand = new DeleteFileByIdCommand(fileId, userId);
+            fileCommandProcessor.deleteFileById(deleteFileCommand);
+            return ResponseEntity.ok("File deleted successfully");
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors de la suppression du fichier par ID : " + e.getMessage());
+            return ResponseEntity.status(500).body("Error deleting file by ID: " + e.getMessage());
         }
     }
 

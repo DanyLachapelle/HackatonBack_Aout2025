@@ -5,11 +5,18 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.comm
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.createFile.CreateFileHandler;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.createFile.CreateFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFile.DeleteFileCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFile.DeleteFileHandler;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFile.DeleteFileOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFileById.DeleteFileByIdCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFileById.DeleteFileByIdHandler;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFileById.DeleteFileByIdOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentHandler;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileHandler;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileOutput;
+import school.token.groupe7_hackatonback_aout2025.application.service.FileManagementService;
 import school.token.groupe7_hackatonback_aout2025.application.utils.ICommandHandler;
 
 @Service
@@ -18,12 +25,19 @@ public class FileCommandProcessor {
     private final ICommandHandler<UploadFileCommand, UploadFileOutput> uploadFileHandler;
     private final ICommandHandler<UpdateFileContentCommand, UpdateFileContentOutput> updateFileContentHandler;
     private final ICommandHandler<DeleteFileCommand, DeleteFileOutput> deleteFileHandler;
+    private final ICommandHandler<DeleteFileByIdCommand,DeleteFileByIdOutput> deleteFileByIdHandler;
 
-    public FileCommandProcessor(ICommandHandler<CreateFileCommand, CreateFileOutput> createFileHandler, ICommandHandler<UploadFileCommand, UploadFileOutput> uploadFileHandler, ICommandHandler<UpdateFileContentCommand, UpdateFileContentOutput> updateFileContentHandler, ICommandHandler<DeleteFileCommand, DeleteFileOutput> deleteFileHandler) {
+    public FileCommandProcessor(
+            CreateFileHandler createFileHandler,
+            UploadFileHandler uploadFileHandler,
+            UpdateFileContentHandler updateFileContentHandler,
+            DeleteFileHandler deleteFileHandler,
+            DeleteFileByIdHandler deleteFileByIdHandler) {
         this.createFileHandler = createFileHandler;
         this.uploadFileHandler = uploadFileHandler;
         this.updateFileContentHandler = updateFileContentHandler;
         this.deleteFileHandler = deleteFileHandler;
+        this.deleteFileByIdHandler = deleteFileByIdHandler;
     }
 
     public CreateFileOutput createFile(CreateFileCommand command) {
@@ -40,5 +54,9 @@ public class FileCommandProcessor {
 
     public DeleteFileOutput deleteFile(DeleteFileCommand command) {
         return deleteFileHandler.handle(command);
+    }
+
+    public DeleteFileByIdOutput deleteFileById(DeleteFileByIdCommand command) {
+        return deleteFileByIdHandler.handle(command);
     }
 }
