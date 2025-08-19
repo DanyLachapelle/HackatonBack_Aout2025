@@ -12,6 +12,8 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.comm
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFileById.DeleteFileByIdOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFolderById.DeleteFolderByIdCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFolderById.DeleteFolderByIdOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.renameFile.RenameFileCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.renameFile.RenameFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentHandler;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentOutput;
@@ -28,19 +30,21 @@ public class FileCommandProcessor {
     private final ICommandHandler<DeleteFileCommand, DeleteFileOutput> deleteFileHandler;
     private final ICommandHandler<DeleteFileByIdCommand,DeleteFileByIdOutput> deleteFileByIdHandler;
     private final ICommandHandler<DeleteFolderByIdCommand, DeleteFolderByIdOutput> deleteFolderByIdHandler;
+    private final ICommandHandler<RenameFileCommand, RenameFileOutput> renameFileHandler;
 
     public FileCommandProcessor(
             CreateFileHandler createFileHandler,
             UploadFileHandler uploadFileHandler,
             UpdateFileContentHandler updateFileContentHandler,
             DeleteFileHandler deleteFileHandler,
-            DeleteFileByIdHandler deleteFileByIdHandler, ICommandHandler<DeleteFolderByIdCommand, DeleteFolderByIdOutput> deleteFolderByIdHandler) {
+            DeleteFileByIdHandler deleteFileByIdHandler, ICommandHandler<DeleteFolderByIdCommand, DeleteFolderByIdOutput> deleteFolderByIdHandler, ICommandHandler<RenameFileCommand, RenameFileOutput> renameFileHandler) {
         this.createFileHandler = createFileHandler;
         this.uploadFileHandler = uploadFileHandler;
         this.updateFileContentHandler = updateFileContentHandler;
         this.deleteFileHandler = deleteFileHandler;
         this.deleteFileByIdHandler = deleteFileByIdHandler;
         this.deleteFolderByIdHandler = deleteFolderByIdHandler;
+        this.renameFileHandler = renameFileHandler;
     }
 
     public CreateFileOutput createFile(CreateFileCommand command) {
@@ -65,5 +69,9 @@ public class FileCommandProcessor {
 
     public DeleteFolderByIdOutput deleteFolderById(DeleteFolderByIdCommand command) {
         return deleteFolderByIdHandler.handle(command);
+    }
+
+    public RenameFileOutput renameFile(RenameFileCommand command) {
+        return renameFileHandler.handle(command);
     }
 }

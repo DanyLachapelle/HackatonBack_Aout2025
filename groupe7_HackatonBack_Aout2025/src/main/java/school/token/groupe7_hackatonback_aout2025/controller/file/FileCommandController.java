@@ -14,6 +14,7 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.comm
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFile.DeleteFileCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFileById.DeleteFileByIdCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.deleteFolderById.DeleteFolderByIdCommand;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.renameFile.RenameFileCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentCommand;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.updateFileContent.UpdateFileContentOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.commands.uploadFile.UploadFileCommand;
@@ -134,6 +135,25 @@ public class FileCommandController {
             return ResponseEntity.ok("Folder deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting folder by ID: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/RenameFile/{fileId}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "File renamed successfully"),
+            @ApiResponse(responseCode = "404", description = "File not found for the given ID"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<String> renameFile(@PathVariable Long fileId,
+                                             @RequestParam String newName,
+                                             @RequestParam(defaultValue = "1") Long userId) {
+        try {
+            RenameFileCommand fileCommand = new RenameFileCommand(fileId, newName, userId);
+            fileCommandProcessor.renameFile(fileCommand);
+            return ResponseEntity.ok("File renamed successfully");
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors du renommage du fichier : " + e.getMessage());
+            return ResponseEntity.status(500).body("Error renaming file: " + e.getMessage());
         }
     }
 
