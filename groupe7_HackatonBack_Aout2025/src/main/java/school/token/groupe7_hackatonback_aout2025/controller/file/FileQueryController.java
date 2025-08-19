@@ -9,6 +9,8 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.quer
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.SearchFile.SearchFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.SearchFile.SearchFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.countFileByPath.CountFileByPathQuery;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.dowloadFile.DowloadFileOutput;
+import school.token.groupe7_hackatonback_aout2025.application.features.file.query.dowloadFile.DowloadFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getAudioFile.GetAudioFileQuery;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getContentByFile.GetContentByFileOutput;
 import school.token.groupe7_hackatonback_aout2025.application.features.file.query.getContentByFile.GetContentByFileQuery;
@@ -213,6 +215,33 @@ public class FileQueryController {
             return ResponseEntity.ok(output.getCount());
         } catch (Exception e) {
             System.out.println("❌ Erreur lors du comptage des fichiers par chemin : " + e.getMessage());
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("DownloadFile")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Download file by path"),
+            @ApiResponse(responseCode = "404", description = "File not found for the given path"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<?> downloadFile(@RequestParam("path") String path,
+                                          @RequestParam("userId") Long userId,
+                                          @RequestParam(value = "inline", defaultValue = "false") boolean inline) {
+        try {
+            DowloadFileQuery downloadFileQuery = new DowloadFileQuery(path, userId, inline);
+            DowloadFileOutput output = fileQueryProcessor.downloadFile(downloadFileQuery);
+
+            if (output.getResource() == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", (inline ? "inline" : "attachment") + "; filename=\"" + output.getFilename() + "\"")
+                    .contentType(org.springframework.http.MediaType.parseMediaType(output.getContentType()))
+                    .body(output.getResource());
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors du téléchargement du fichier : " + e.getMessage());
             return ResponseEntity.status(500).body(null);
         }
     }
