@@ -28,7 +28,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/files")
+@RequestMapping("/api/v2/files")
 public class FileQueryController {
 
     private final FileQueryProcessor fileQueryProcessor;

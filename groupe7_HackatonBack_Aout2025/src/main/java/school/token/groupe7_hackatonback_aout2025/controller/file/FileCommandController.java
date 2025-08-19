@@ -24,7 +24,7 @@ import school.token.groupe7_hackatonback_aout2025.application.features.file.comm
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/files")
+@RequestMapping("/api/v2/files")
 public class FileCommandController {
     private final FileCommandProcessor fileCommandProcessor;
 

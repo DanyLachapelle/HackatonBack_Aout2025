@@ -14,7 +14,7 @@ import school.token.groupe7_hackatonback_aout2025.application.features.folder.co
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/folders")
+@RequestMapping("/api/v2/folders")
 public class FolderCommandController {
     private final FolderCommandProcessor folderCommandProcessor;
 

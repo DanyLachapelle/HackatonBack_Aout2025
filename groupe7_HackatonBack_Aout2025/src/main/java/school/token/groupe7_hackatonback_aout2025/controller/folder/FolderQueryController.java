@@ -18,7 +18,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/folders")
+@RequestMapping("/api/v2/folders")
 public class FolderQueryController {
     private final FolderQueryProcessor folderQueryProcessor;
 
