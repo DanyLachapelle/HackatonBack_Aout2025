@@ -5,8 +5,8 @@ package school.token.groupe7_hackatonback_aout2025.domain;
  */
 public enum SystemFolderType {
     BUREAU("Bureau", "🖥️", true),
-    MUSIQUE("Musique", "🎵", false),
-    IMAGES("Images", "🖼️", false),
+    MUSIQUE("Musique", "🎵", true),
+    IMAGES("Images", "🖼️", true),
     DOCUMENTS("Documents", "📄", false);
 
     private final String displayName;
@@ -45,10 +45,9 @@ public enum SystemFolderType {
             case BUREAU:
                 return true; // Tous les types de fichiers autorisés sur le bureau
             case MUSIQUE:
-                return contentType.startsWith("audio/")  ||
-                        contentType.equals("video/mp4");
+                return true; // Tous les types de fichiers autorisés dans le dossier Musique
             case IMAGES:
-                return contentType.startsWith("image/");
+                return true; // Tous les types de fichiers autorisés dans le dossier Images
             case DOCUMENTS:
                 return contentType.startsWith("text/") || 
                        contentType.equals("application/pdf") ||

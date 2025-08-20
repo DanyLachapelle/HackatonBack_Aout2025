@@ -103,7 +103,9 @@ public class FileManagementService {
         
         // Vérifier que le dossier parent n'est pas un dossier système racine pour certaines restrictions
         if (parentFolder.getIsSystemFolder() && parentFolder.getSystemFolderType() != SystemFolderType.BUREAU 
-            && parentFolder.getSystemFolderType() != SystemFolderType.DOCUMENTS) {
+            && parentFolder.getSystemFolderType() != SystemFolderType.DOCUMENTS
+            && parentFolder.getSystemFolderType() != SystemFolderType.MUSIQUE
+            && parentFolder.getSystemFolderType() != SystemFolderType.IMAGES) {
             throw new RuntimeException("Impossible de créer des sous-dossiers dans ce dossier système.");
         }
         
