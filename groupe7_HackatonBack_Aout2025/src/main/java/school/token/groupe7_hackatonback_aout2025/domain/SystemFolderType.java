@@ -7,7 +7,8 @@ public enum SystemFolderType {
     BUREAU("Bureau", "🖥️", true),
     MUSIQUE("Musique", "🎵", true),
     IMAGES("Images", "🖼️", true),
-    DOCUMENTS("Documents", "📄", false);
+    DOCUMENTS("Documents", "📄", false),
+    FAVORIS("Favoris", "⭐", false);
 
     private final String displayName;
     private final String icon;
@@ -50,6 +51,11 @@ public enum SystemFolderType {
                 return true; // Tous les types de fichiers autorisés dans le dossier Images
             case DOCUMENTS:
                 return contentType.startsWith("text/") || 
+                       contentType.equals("application/pdf") ||
+                       contentType.startsWith("application/vnd.openxmlformats-officedocument") ||
+                       contentType.startsWith("application/vnd.oasis.opendocument");
+            case FAVORIS:
+                return contentType.startsWith("text/") ||
                        contentType.equals("application/pdf") ||
                        contentType.startsWith("application/vnd.openxmlformats-officedocument") ||
                        contentType.startsWith("application/vnd.oasis.opendocument");
